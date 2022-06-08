@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quiz_app/product/constant/padding_items.dart';
 import 'package:flutter_quiz_app/service/pokemon_service.dart';
-import 'package:flutter_quiz_app/view/pokemon_details.dart';
+
+import 'package:flutter_quiz_app/view/pokemon_details_view.dart';
 import 'package:flutter_quiz_app/viewModel/pokemon_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -32,6 +33,7 @@ class _PokemonViewState extends State<PokemonView> {
                 child: GestureDetector(
                   onTap: () async {
                     String dd = context.read<PokemonProvider>().resources[index].url.toString();
+
                     await Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => PokemonDetailsView(path: dd),
                     ));
