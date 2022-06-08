@@ -4,18 +4,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter_quiz_app/model/pokemon_model.dart';
 
 abstract class IPokemonService {
-  IPokemonService(this.dio);
-  final Dio dio;
-
   Future<PokemonModel?> fetchResourceItem();
 }
 
 class PokemonService extends IPokemonService {
-  PokemonService(Dio dio) : super(dio);
-
   @override
   Future<PokemonModel?> fetchResourceItem() async {
-    final response = await dio.get('/pokemon');
+    final response = await Dio().get('https://pokeapi.co/api/v2/pokemon');
 
     if (response.statusCode == HttpStatus.ok) {
       final jsonBody = response.data;

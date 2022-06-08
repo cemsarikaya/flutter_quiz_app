@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quiz_app/product/constant/padding_items.dart';
-import 'package:flutter_quiz_app/product/service/project_dio.dart';
 import 'package:flutter_quiz_app/service/pokemon_service.dart';
+import 'package:flutter_quiz_app/view/pokemon_details.dart';
 import 'package:flutter_quiz_app/viewModel/pokemon_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +11,7 @@ class PokemonView extends StatefulWidget {
   State<PokemonView> createState() => _PokemonViewState();
 }
 
-class _PokemonViewState extends State<PokemonView> with ProjectDioMixin {
+class _PokemonViewState extends State<PokemonView> {
   @override
   void initState() {
     super.initState();
@@ -20,7 +20,7 @@ class _PokemonViewState extends State<PokemonView> with ProjectDioMixin {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => PokemonProvider(PokemonService(service)),
+      create: (context) => PokemonProvider(PokemonService()),
       builder: (context, child) {
         return Scaffold(
           appBar: AppBar(),
@@ -30,7 +30,12 @@ class _PokemonViewState extends State<PokemonView> with ProjectDioMixin {
               return Padding(
                 padding: PaddindUtility().paddingCard,
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () async {
+                    String dd = context.read<PokemonProvider>().resources[index].url.toString();
+                    await Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => PokemonDetailsView(path: dd),
+                    ));
+                  },
                   child: Card(
                     child: Padding(
                       padding: PaddindUtility().paddingGeneral,
