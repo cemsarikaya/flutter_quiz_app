@@ -32,7 +32,21 @@ class _PokemonDetailsViewState extends State<PokemonDetailsView> with ProjectDio
             appBar: AppBar(title: Text(context.watch<PokemonDetailsProvider>().nameItem.toString()), actions: [
               Padding(
                 padding: PaddindUtility().paddingGeneral,
-                child: const Icon(Icons.favorite_border),
+                child: IconButton(
+                    icon: context.watch<PokemonDetailsProvider>().isSeleceted
+                        ? const Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                          )
+                        : const Icon(
+                            Icons.favorite_border,
+                            color: Colors.grey,
+                          ),
+                    onPressed: () async {
+                      context.read<PokemonDetailsProvider>().changeSelected();
+                      // final prefs = await SharedPreferences.getInstance();
+                      // await prefs.setBool('repeat', isSeleceted);
+                    }),
               )
             ]),
             body: ListView(children: const [PokemonListView()]),

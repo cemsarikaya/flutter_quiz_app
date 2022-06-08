@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quiz_app/model/pokemon_details_model.dart';
 import 'package:flutter_quiz_app/service/pokemon_details_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PokemonDetailsProvider extends ChangeNotifier {
   final IPokemonDetailsService pokemonService;
@@ -20,8 +21,17 @@ class PokemonDetailsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool isSeleceted = false;
+  void changeSelected() {
+    isSeleceted = !isSeleceted;
+    saveBoolSharedPref(isSeleceted);
+    notifyListeners();
+  }
+
   PokemonDetailsProvider(this.pokemonService) {
     fetch();
+    saveBoolSharedPref(isSeleceted);
+    loadThemeSharedPref();
   }
 
   Future<void> fetch() async {
@@ -34,5 +44,19 @@ class PokemonDetailsProvider extends ChangeNotifier {
     nameItem = (await pokemonService.fetchResourceItem())?.name?.toString();
     sprites = (await pokemonService.fetchResourceItem())?.sprites;
     _changeLoading();
+  }
+
+  SharedPreferences? _sharedPreferObject;
+  Future<void> createSheredPrefObject() async {
+    _sharedPreferObject = await SharedPreferences.getInstance();
+  }
+
+  void saveBoolSharedPref(bool value) {
+    _sharedPreferObject?.setBool('favorite', value);
+  }
+
+  Future<void> loadThemeSharedPref() async {
+    await createSheredPrefObject();
+    isSeleceted = _sharedPreferObject?.getBool('favorite') ?? true;
   }
 }
