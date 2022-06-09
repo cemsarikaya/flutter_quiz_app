@@ -24,7 +24,7 @@ class _PokemonViewState extends State<PokemonView> {
       create: (context) => PokemonProvider(PokemonService()),
       builder: (context, child) {
         return Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(title: const Text('Pokemon')),
           body: ListView.builder(
             itemCount: context.watch<PokemonProvider>().resources.length,
             itemBuilder: (context, index) {
@@ -32,10 +32,11 @@ class _PokemonViewState extends State<PokemonView> {
                 padding: PaddindUtility().paddingCard,
                 child: GestureDetector(
                   onTap: () async {
-                    String dd = context.read<PokemonProvider>().resources[index].url.toString();
-
+                    String path = context.read<PokemonProvider>().resources[index].url.toString();
                     await Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => PokemonDetailsView(path: dd),
+                      builder: (context) => PokemonDetailsView(
+                        path: path,
+                      ),
                     ));
                   },
                   child: Card(
